@@ -79,17 +79,31 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+const cors = require('cors');
+app.use(cors({
+    origin: '*'
+}));
+
 app.get('/', (req, res, next) => {
     console.log({message: "Hello World"});
     res.send({message: "Hello World"});
 })
 
 app.get('/movies', (req,res)=>{
-    console.log(movies);
-    res.send(movies);
+    console.log("movies hit");
+    const movieSummaries = movies.map((movie)=>{
+        return {
+            name: movie.name,
+            agerating: movie.agerating,
+            image: movie.image,
+            rating: movie.rating,
+            upvotes: movie.upvotes,
+            downvotes: movie.downvotes,
+        }
+    })
+
+    res.send(movieSummaries);
 })
-
-
 
 // Require the Routes API  
 // Create a Server and run it on the port 4000
